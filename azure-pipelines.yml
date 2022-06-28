@@ -1,0 +1,44 @@
+trigger:
+
+- master
+
+stages: 
+- stage: 'BuildTest'
+  displayName: 'Build and Test'
+  variables :
+
+  GOVERSION: '1.18'
+  CGO_ENABLED: '0'
+  GOOS: 'linux'
+  GOARCH: 'amd64'
+
+jobs:
+- job: BuildTestBackend
+  displayName: 'Build and Test Go Backend'
+  pool:
+  vmImage: 'Ubuntu 18.04'
+
+steps:
+- task: GoTool@0
+  inputs:
+    version: $(GOVERSION)
+  displayName: 'Install and Select Go version $(GOVERSION)'
+
+- task : Go@0
+inputs:
+  command: 'build'
+  arguments: '-a -o demo'
+  displayName: 'Build Go App'
+
+
+- publish: '$(Build.SourceDirectory)/demo'
+  artifact: 'Executable'
+  displayName: 'Publish pipeline artifact'
+
+
+- task: PublishCodeCoverageResults@1
+  condition: always()
+  inputs:
+  codeCoverageTool: 'Cobertura'
+  summaryFileLocation: '$(Build.SourcesDirectory)/demo-coverage.xml'
+  displayName: 'Publish code coverage results'
