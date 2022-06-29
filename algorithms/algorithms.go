@@ -23,9 +23,7 @@ func (fi *FibonacciIterator) Next() bool {
 
 func (fi FibonacciIterator) Value() int64 {
 	if fi.current == 0 && fi.previous == 0 {
-		fi.current =1
-		return fi.previous
+		panic("Iterator is in invalid state, call next at least once before calling ")
 	}
-	fi.previous, fi.current = fi.current, fi.previous+fi.current
-	return fi.previous
+	return fi.current
 }
