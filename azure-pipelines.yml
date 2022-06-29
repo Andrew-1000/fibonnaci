@@ -38,21 +38,27 @@ stages:
       displayName: 'Run unit tests and convert results'
       failOnStderr: true
 
-- task : Go@0
-  inputs:
-    command: 'build'
-    arguments: '-a -o demo'
-  displayName: 'Build Go App'
+    - task: Go@0
+      inputs:
+        command: 'build'
+        arguments: '-a -o demo'
+      displayName: 'Build Go app'
 
+    - publish: '$(Build.SourcesDirectory)/demo'
+      artifact: 'Executable'
+      displayName: 'Publish pipeline artifact'
 
-- publish: '$(Build.SourceDirectory)/demo'
-  artifact: 'Executable'
-  displayName: 'Publish pipeline artifact'
+    - task: PublishTestResults@2
+      condition: always()
+      inputs:
+        testResultsFormat: 'JUnit'
+        testResultsFiles: '*report*.xml' 
+        searchFolder: '$(Build.SourcesDirectory)'
+      displayName: 'Publish test results'
 
-
-- task: PublishCodeCoverageResults@1
-  condition: always()
-  inputs:
-  codeCoverageTool: 'Cobertura'
-  summaryFileLocation: '$(Build.SourcesDirectory)/demo-coverage.xml'
-  displayName: 'Publish code coverage results'
+    - task: PublishCodeCoverageResults@1
+      condition: always()
+      inputs:
+        codeCoverageTool: 'Cobertura'
+        summaryFileLocation: '$(Build.SourcesDirectory)/demo-coverage.xml'
+      displayName: 'Publish code coverage results'
