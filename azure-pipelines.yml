@@ -23,9 +23,9 @@ steps:
   displayName: 'Install and Select Go version $(GOVERSION)'
 
 - task : Go@0
-inputs:
-  command: 'build'
-  arguments: '-a -o demo'
+  inputs:
+    command: 'build'
+    arguments: '-a -o demo'
   displayName: 'Build Go App'
 
 
