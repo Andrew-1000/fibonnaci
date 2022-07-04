@@ -1,15 +1,13 @@
 package algorithms
 
 import (
-
 	"github.com/stretchr/testify/assert"
 	"testing"
-
 )
+
 func TestNewFibonacciIterator(t *testing.T) {
 	iter := NewFibonacciIterator()
-
-	assert.Panics(t, func() {iter.Value()}, "Value did not panic before next")
+	assert.Panics(t, func() { iter.Value() }, "Value did not panic before Next")
 }
 
 func TestNext(t *testing.T) {
@@ -19,4 +17,3 @@ func TestNext(t *testing.T) {
 	iter.Next()
 	assert.Equal(t, int64(1), iter.Value())
 }
-
