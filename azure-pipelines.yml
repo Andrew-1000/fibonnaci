@@ -1,12 +1,12 @@
 trigger:
 - master
 
-stages: 
+stages:
 - stage: 'BuildTest'
   displayName: 'Build and Test'
-  variables :
-    GOVERSION: '1.18'
-    CGO_ENABLED: '0'
+  variables:
+    GOVERSION: '1.18'   # Version of Go tools used for building and testing
+    CGO_ENABLED: '0'      # Disable cgo to get a static binary
     GOOS: 'linux'
     GOARCH: 'amd64'
   jobs:
@@ -18,7 +18,8 @@ stages:
     - task: GoTool@0
       inputs:
         version: $(GOVERSION)
-      displayName: 'Install and Select Go version $(GOVERSION)'
+      displayName: 'Install and select Go version $(GOVERSION)'
+
     - script: |
         # Get tools for converting Go's test reports
         go get -u github.com/jstemmer/go-junit-report 2>&1
@@ -30,6 +31,7 @@ stages:
         # Convert coverage file into XML
         /home/andrew/go/bin/gocov convert demo-coverage.txt > demo-coverage.json
         /home/andrew/go/bin/gocov-xml < demo-coverage.json > demo-coverage.xml
+  
         # Check if `go test` had an error
         if [ $rc -ne 0 ]; then
           # Let script fail by writing to stderr
