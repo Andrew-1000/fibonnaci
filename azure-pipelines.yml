@@ -83,7 +83,7 @@ stages:
         azureSubscription: 'fibonacci'
         action: 'Create Or Update Resource Group'
         resourceGroupName: 'fibonacci'
-        location: 'southeastasia'
+        location: 'centralus'
         templateLocation: 'Linked artifact'
         csmFile: 'azuredeploy.json'
         overrideParameters: '-siteName fibonacci-mgnt -demoAppImageVersion $(Build.BuildId)'
