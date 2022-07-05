@@ -86,12 +86,12 @@ stages:
         location: 'centralkorea'
         templateLocation: 'Linked artifact'
         csmFile: 'azuredeploy.json'
-        overrideParameters: '-siteName fibonacci -demoAppImageVersion $(Build.BuildId)'
+        overrideParameters: '-siteName fibonacci-mgnt -demoAppImageVersion $(Build.BuildId)'
         deploymentMode: 'Incremental'
       displayName: 'Create or Update Azure Resource Group'
 
     - script: |
-        curl --fail --max-time 15 https://fibonacci.azurewebsites.net/fibon 2>&1
+        curl --fail --max-time 15 https://fibonacci-mgnt.azurewebsites.net/fibon 2>&1
         if [ $? -ne 0 ]; then
           >&2 echo "Website not reachable"
         fi
